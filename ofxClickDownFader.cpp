@@ -153,6 +153,10 @@ void ofxClickDownFader::mouseReleased(ofMouseEventArgs &mouse){
 	
 }
 
+void ofxClickDownFader::mouseScrolled(ofMouseEventArgs &mouse){
+    
+}
+
 void ofxClickDownFader::keyPressed(ofKeyEventArgs &key){
 	
 }

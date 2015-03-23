@@ -9,6 +9,7 @@
 #include "ofxClickDownMenu.h"
 
 ofxClickDownMenu::ofxClickDownMenu(){
+    DisbaleOpenClick = true;
 	OnlyRightClick = true;
 	useFont = false;
 	
@@ -124,9 +125,11 @@ void ofxClickDownMenu::mousePressed(ofMouseEventArgs &mouse){
 	if (haveFChild)return;
 	if (phase == PHASE_SELECT) return;
 	if ((phase == PHASE_WAIT)&&(Enable)){
-		if (((mouse.button == 2)&&(OnlyRightClick))||(!OnlyRightClick)) {
-			openMenu(mouse.x,mouse.y);
-		}
+        if(DisbaleOpenClick != true){
+            if (((mouse.button == 2)&&(OnlyRightClick))||(!OnlyRightClick)) {
+            	openMenu(mouse.x,mouse.y);
+            }
+        }
 	}else if (phase == PHASE_CLICK){
 		if (menu_focused != -1){
 			doFunction();
@@ -160,6 +163,10 @@ void ofxClickDownMenu::mouseReleased(ofMouseEventArgs &mouse){
 	
 }
 
+void ofxClickDownMenu::mouseScrolled(ofMouseEventArgs &mouse){
+    
+}
+
 void ofxClickDownMenu::keyPressed(ofKeyEventArgs &key){
 }
 
@@ -182,6 +189,12 @@ void ofxClickDownMenu::RegisterMenu(string Menu){
 	
 	window_size.y = menus.size()*20;
 	window_size.x = MAX(bt.message.length()*9,window_size.x);
+}
+
+////// JOSH
+void ofxClickDownMenu::RegisterBranch(string Menu, ofxClickDownMenu *clickDownMenu){
+    
+    clickDownMenu->openMenu(ofGetWidth()/2, ofGetHeight()/2);
 }
 
 void ofxClickDownMenu::RegisterBranch(string Menu, vector<string> *Menus){

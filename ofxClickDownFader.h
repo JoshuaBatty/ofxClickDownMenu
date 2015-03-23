@@ -43,6 +43,7 @@ public:
 	void mouseDragged(ofMouseEventArgs& mouse);
 	void mouseMoved(ofMouseEventArgs& mouse);
 	void mouseReleased(ofMouseEventArgs& mouse);
+    void mouseScrolled(ofMouseEventArgs& mouse);
 	void keyPressed(ofKeyEventArgs  &key);
 	void keyReleased(ofKeyEventArgs &key);
 };

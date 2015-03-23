@@ -40,6 +40,7 @@ public:
 	void draw();
 	void RegisterMenu(string Menu);
 	void RegisterBranch(string Menu,vector<string> *Menus);
+    void RegisterBranch(string Menu,ofxClickDownMenu *Menus);
 	void RegisterFader(string Menu,float *valueP);
 	void UnRegisterMenu(string Menu);
 	
@@ -68,12 +69,14 @@ public:
 	bool Enable;
 	bool useFont;
 	bool OnlyRightClick;
-	
+    bool DisbaleOpenClick;
+
 	//Mouse & Key Events
 	void mousePressed(ofMouseEventArgs& mouse);
 	void mouseDragged(ofMouseEventArgs& mouse);
 	void mouseMoved(ofMouseEventArgs& mouse);
 	void mouseReleased(ofMouseEventArgs& mouse);
+    void mouseScrolled(ofMouseEventArgs& mouse);
 	void keyPressed(ofKeyEventArgs  &key);
 	void keyReleased(ofKeyEventArgs &key);
 
