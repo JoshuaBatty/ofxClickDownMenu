@@ -20,6 +20,18 @@ void ofApp::setup(){
 
     //Add Event Listener
     ofAddListener(ofxCDMEvent::MenuPressed, this, &ofApp::cmdEvent);
+    
+    // UI Menu
+    uiMenu.init("test", 100, 30, 0 , 0, 0);
+    ofAddListener(uiMenu.variablePressed, this, &ofApp::bMenuPressed);
+
+}
+
+//--------------------------------------------------------------
+void ofApp::bMenuPressed(bool & b){
+    cout << "CUUUUNNNTT" << endl;
+    DestinationMenu.openMenu(uiMenu.getPosition().x,uiMenu.getPosition().y);
+
 }
 
 //--------------------------------------------------------------
@@ -107,6 +119,8 @@ void ofApp::draw(){
     
     DestinationMenu.draw();
     ModulatorMenu.draw();
+    
+    uiMenu.draw(300, 300);
     
 }
 

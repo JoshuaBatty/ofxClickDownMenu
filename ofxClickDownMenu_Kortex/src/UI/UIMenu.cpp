@@ -28,7 +28,7 @@ void UIMenu::init(string _name, float _w, float _h, float _padleft, float _padri
         ofLogError("UIObject") << "Failed to load icon: " << name;
     }
     
-    scale = 0.75f;
+    scale = 1.0;
     
 }
 
@@ -52,7 +52,12 @@ void UIMenu::draw(int x, int y) {
     xPos = x;
 //    sliderX = xPos-(width*0.65);
     set(x,y, width*scale, height*scale);
-    icon.draw(x,y,width * scale,height * scale);
+   // icon.draw(x,y,width * scale,height * scale);
+    
+    ofNoFill();
+    ofSetColor(255);
+    ofRect(x,y,width * scale,height * scale);
+    ofFill();
 }
 
 bool UIMenu::isSliderOpen(){

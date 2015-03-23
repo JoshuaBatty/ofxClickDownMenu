@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxClickDownMenu.h"
+#include "UIMenu.h"
 
 #define SHAPE_RECT 0
 #define SHAPE_CIRCLE 1
@@ -49,4 +50,11 @@ class ofApp : public ofBaseApp{
     
     string destination;
     string modulator;
+    
+    
+    // UI Menu
+    UIMenu uiMenu;
+    
+    //EVENTS
+    void bMenuPressed(bool & b);
 };

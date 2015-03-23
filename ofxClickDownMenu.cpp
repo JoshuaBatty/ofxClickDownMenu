@@ -51,9 +51,18 @@ void ofxClickDownMenu::draw(){
 		for (int i = 0;i < menus.size();i++){
 			if (frame > i*3) {
 				ofSetColor(255,255,255,100);
-				if (i > 0) ofLine(window_pos.x		, window_pos.y+i*20, 
-								  window_pos.x+window_size.x*(1-(powf((MIN(1.0,MAX(0.0,frame-i*3)/15.0))-1.0,4.0))),
-								  window_pos.y+i*20);
+                if (i > 0) {
+                    
+                    // Fill inbetween borders with black to remove transperancy
+                    //ofSetColor(0, 0, 0);
+                    //ofRect(window_pos.x,window_pos.y+i*20, window_size.x, 20);
+
+                    // Draw a border
+                    ofLine(window_pos.x		, window_pos.y+i*20,
+                           window_pos.x+window_size.x*(1-(powf((MIN(1.0,MAX(0.0,frame-i*3)/15.0))-1.0,4.0))),
+                           window_pos.y+i*20);
+                }
+                
 				ofSetColor(255,255,255);
 				string mes = "";
 				
