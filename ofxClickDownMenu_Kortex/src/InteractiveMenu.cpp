@@ -18,6 +18,7 @@ void InteractiveMenu::setup(int x, int y){
     xPos = x;
     yPos = y;
     padding = 200;
+    menuWidth = 100;
     
     destination = "";
     modulator   = "";
@@ -29,15 +30,18 @@ void InteractiveMenu::setup(int x, int y){
     ofAddListener(ofxCDMEvent::MenuPressed, this, &InteractiveMenu::cmdEvent);
     
     // UI Menu
-    modMenu.init("mod test", 100, 30, 0 , 0, 0);
-    destMenu.init("dest test", 100, 30, 0 , 0, 0);
+    modMenu.init("mod test", menuWidth, 30, 0 , 0, 0);
+    destMenu.init("dest test", menuWidth, 30, 0 , 0, 0);
 
     ofAddListener(modMenu.variablePressed, this, &InteractiveMenu::bModMenuPressed);
     ofAddListener(destMenu.variablePressed, this, &InteractiveMenu::bDestMenuPressed);
  
     // ofxUI
-    gui = new ofxUISuperCanvas("Canvas", xPos, yPos, padding, 30);
-    gui->addRangeSlider("Range", 0.0, 1.0, 0.0, 1.0);
+    gui = new ofxUICanvas();
+    gui->init(xPos+menuWidth, yPos, padding/2, 30);
+
+    gui->addRangeSlider("Range", 0.0, 1.0, 0.0, 1.0, menuWidth-10, 30-8);
+
 
 }
 
@@ -75,6 +79,22 @@ void InteractiveMenu::initModulators(){
     //JENIFER MAX Modulator Buttons Menu
     ModulatorMenu_JEN.push_back("Kick Vol");
     ModulatorMenu_JEN.push_back("Snare Vol");
+    ModulatorMenu_JEN.push_back("----PlayHeads----");
+        ModulatorMenu_JEN.push_back("Song");
+        ModulatorMenu_JEN.push_back("Part");
+        ModulatorMenu_JEN.push_back("Segment");
+        ModulatorMenu_JEN.push_back("Bar");
+        ModulatorMenu_JEN.push_back("Minim");
+        ModulatorMenu_JEN.push_back("Beat");
+        ModulatorMenu_JEN.push_back("Quaver");
+        ModulatorMenu_JEN.push_back("SemiQuaver");
+
+    ModulatorMenu_JEN.push_back("----Instruments----");
+        ModulatorMenu_JEN.push_back("Kick Amp");
+        ModulatorMenu_JEN.push_back("Kick Perc");
+        ModulatorMenu_JEN.push_back("Kick Pan");
+
+    
     ModulatorMenu.RegisterBranch("JEN", &ModulatorMenu_JEN);
 }
 
@@ -124,6 +144,9 @@ void InteractiveMenu::update(){
 //--------------------------------------------------------------
 void InteractiveMenu::draw(){
 
+    ofSetColor(255,100,10);
+    ofDrawBitmapString("Dest", xPos, yPos - 5);
+    
     /*-------------Draw Dest Menu-------------*/
     ofSetColor(255, 0, 25);
     ofNoFill();

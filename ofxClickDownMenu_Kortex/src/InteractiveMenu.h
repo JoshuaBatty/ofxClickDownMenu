@@ -29,7 +29,7 @@ public:
     ofxClickDownMenu DestinationMenu;
     ofxClickDownMenu ModulatorMenu;
     
-    ofxUISuperCanvas *gui;
+    ofxUICanvas *gui;
     void guiEvent(ofxUIEventArgs &e);
     
     // Desitnations
@@ -56,4 +56,5 @@ private:
     int xPos;
     int yPos;
     int padding;
+    int menuWidth;
 };
