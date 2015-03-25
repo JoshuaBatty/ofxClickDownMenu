@@ -12,6 +12,7 @@ ofxClickDownMenu::ofxClickDownMenu(){
     DisbaleOpenClick = true;
 	OnlyRightClick = true;
 	useFont = false;
+    bIsMenuOpen = false;
 	
 	font.loadFont("BEBAS___.TTF", 10);
 	phase = PHASE_WAIT;
@@ -56,7 +57,7 @@ void ofxClickDownMenu::draw(){
                     // Fill inbetween borders with black to remove transperancy
                     //ofSetColor(0, 0, 0);
                     //ofRect(window_pos.x,window_pos.y+i*20, window_size.x, 20);
-
+                    
                     // Draw a border
                     ofLine(window_pos.x		, window_pos.y+i*20,
                            window_pos.x+window_size.x*(1-(powf((MIN(1.0,MAX(0.0,frame-i*3)/15.0))-1.0,4.0))),
@@ -277,6 +278,7 @@ void ofxClickDownMenu::doFunction(){
 		}else{
 			frame = 0;
 			phase = PHASE_SELECT;
+            bIsMenuOpen = false;
 		}
 	}else if(menus[menu_focused].isFader){
 		//Gen Fader
@@ -314,8 +316,8 @@ void ofxClickDownMenu::doFunction(){
 				ofNotifyEvent(ofxCDMEvent::MenuPressed,ev);
 			}
 		}
-
 	}
+
 }
 
 void ofxClickDownMenu::openMenu(int x,int y){
@@ -324,8 +326,13 @@ void ofxClickDownMenu::openMenu(int x,int y){
 	window_y = 0;
 	frame = 0;
 	menu_focused = -1;
-	phase = PHASE_CLICK;		
+	phase = PHASE_CLICK;
+    bIsMenuOpen = true;
 	ofxCDMEvent ev;
 	ev.message = menu_name + "::" + "mouseFix";
 	ofNotifyEvent(ofxCDMEvent::MenuPressed,ev);
+}
+
+bool ofxClickDownMenu::getIsActive(){
+    return bIsMenuOpen;
 }

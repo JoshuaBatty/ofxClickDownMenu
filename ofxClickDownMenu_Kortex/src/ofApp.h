@@ -1,12 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxClickDownMenu.h"
-#include "UIMenu.h"
-
-#define SHAPE_RECT 0
-#define SHAPE_CIRCLE 1
-#define SHAPE_TRIANGLE 2
+#include "InteractiveMenu.h"
 
 class ofApp : public ofBaseApp{
 
@@ -29,32 +24,5 @@ class ofApp : public ofBaseApp{
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
     
-    /*-----ofxCDM objects----*/
-    void cmdEvent(ofxCDMEvent &ev);
-    ofxClickDownMenu DestinationMenu;
-    ofxClickDownMenu ModulatorMenu;
-    
-    ofColor col;
-    int shape;
-    float brightness;
-    float size;
-    
-    // Desitnations
-    vector<string> DestinationMenu_AVGS;
-    vector<string> DestinationMenu_SHADER;
-    vector<string> DestinationMenu_FM;
-
-    // Modulators
-    vector<string> ModulatorMenu_LFO;
-    vector<string> ModulatorMenu_JEN;
-    
-    string destination;
-    string modulator;
-    
-    
-    // UI Menu
-    UIMenu uiMenu;
-    
-    //EVENTS
-    void bMenuPressed(bool & b);
+    InteractiveMenu menu;
 };

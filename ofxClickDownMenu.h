@@ -46,7 +46,8 @@ public:
 	
 	void openMenu(int x,int y);
 	void doFunction();
-	
+    bool getIsActive();
+    
 	ofPoint menu_pos;
 	string menu_name;
 	deque<ofxCDMButton> menus;
@@ -70,6 +71,7 @@ public:
 	bool useFont;
 	bool OnlyRightClick;
     bool DisbaleOpenClick;
+    bool bIsMenuOpen;
 
 	//Mouse & Key Events
 	void mousePressed(ofMouseEventArgs& mouse);
