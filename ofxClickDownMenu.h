@@ -20,12 +20,16 @@
 #define PHASE_BACK 5
 
 class ofxClickDownFader;
+class ofxClickDownMenu;
 
 struct ofxCDMButton{
 	string message;
 	bool isBranch;
-	bool isFader;
+    bool isFader;
 	float* fader_Pointer;
+    bool isMenu;
+    bool isButton;
+    ofxClickDownMenu* menuPointer;
 	vector<string> branchmenu;
 };
 
@@ -39,11 +43,13 @@ public:
 	~ofxClickDownMenu();
 	void draw();
 	void RegisterMenu(string Menu);
+    void RegisterButton(string Button);
 	void RegisterBranch(string Menu,vector<string> *Menus);
-    void RegisterBranch(string Menu,ofxClickDownMenu *Menus);
 	void RegisterFader(string Menu,float *valueP);
 	void UnRegisterMenu(string Menu);
 	
+    void RegisterMenuBranch(ofxClickDownMenu * menu);
+
 	void openMenu(int x,int y);
 	void doFunction();
     bool getIsActive();
@@ -59,6 +65,7 @@ public:
 	int phase;
 	float frame;
 	int menu_focused;
+    bool isBranchMenu;
 	
 	ofxClickDownMenu *child;
 	ofxClickDownFader *fchild;
@@ -71,7 +78,6 @@ public:
 	bool useFont;
 	bool OnlyRightClick;
     bool DisbaleOpenClick;
-    bool bIsMenuOpen;
 
 	//Mouse & Key Events
 	void mousePressed(ofMouseEventArgs& mouse);

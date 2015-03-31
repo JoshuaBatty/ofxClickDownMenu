@@ -17,6 +17,11 @@ class InteractiveMenu{
     
 public:
     
+    // Put in a slider that shows the values coming in from the modulators
+    // Or maybe draw the JenOSC visualisers underneath the menu buttons in click down menu
+    // That way you can see right there the data each one represents
+    // Same for all the Mods so LFO's, Rordering... etc..
+    
     void setup(int x, int y);
     void update();
     void draw();
@@ -26,9 +31,13 @@ public:
     
     /*-----ofxCDM objects----*/
     void cmdEvent(ofxCDMEvent &ev);
+    ofxClickDownMenu jenMenu;
     ofxClickDownMenu DestinationMenu;
     ofxClickDownMenu ModulatorMenu;
     
+    ofxClickDownMenu playheads;
+    ofxClickDownMenu instruments;
+
     ofxUICanvas *gui;
     void guiEvent(ofxUIEventArgs &e);
     
@@ -39,7 +48,8 @@ public:
     
     // Modulators
     vector<string> ModulatorMenu_LFO;
-    vector<string> ModulatorMenu_JEN;
+    vector<string> instruments_JEN;
+    vector<string> playheads_JEN;
     
     string destination;
     string modulator;
@@ -57,4 +67,6 @@ private:
     int yPos;
     int padding;
     int menuWidth;
+    
+    float test;
 };

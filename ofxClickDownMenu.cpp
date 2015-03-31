@@ -12,7 +12,7 @@ ofxClickDownMenu::ofxClickDownMenu(){
     DisbaleOpenClick = true;
 	OnlyRightClick = true;
 	useFont = false;
-    bIsMenuOpen = false;
+    isBranchMenu = false;
 	
 	font.loadFont("BEBAS___.TTF", 10);
 	phase = PHASE_WAIT;
@@ -72,7 +72,7 @@ void ofxClickDownMenu::draw(){
 				for (int j = 0;j < MAX(0,(float)menus[i].message.length()-MAX(0,(frame-i*3)/2));j++){
 					mes += ofToString((char)ofRandom(33,120));
 				}
-				if (menus[i].isBranch) mes += " >";
+				if (menus[i].isBranch || menus[i].isMenu) mes += " >";
 				if (useFont){
 					font.drawString(mes, window_pos.x+4,window_pos.y+i*20+15);					
 				}else{
@@ -100,7 +100,9 @@ void ofxClickDownMenu::draw(){
 		if (useFont){
 			font.drawString(menus[menu_focused].message, window_pos.x+4,window_pos.y+menu_focused*20+15);				
 		}else{
-			ofDrawBitmapString(menus[menu_focused].message, window_pos.x+4,window_pos.y+menu_focused*20+13);	
+            if(menus.size() > menu_focused) {
+                ofDrawBitmapString(menus[menu_focused].message, window_pos.x+4,window_pos.y+menu_focused*20+13);
+            }
 		}
 		
 		ofEnableBlendMode(OF_BLENDMODE_ADD);
@@ -116,8 +118,13 @@ void ofxClickDownMenu::draw(){
 		ofFill();
 		if (frame > 15){
 			if (isChild){
-				parent->haveChild = false;
-				delete this;
+                parent->haveChild = false;
+                if (isBranchMenu) {
+                    parent->frame = 0;
+                    parent->phase = PHASE_SELECT;
+                } else {
+                    delete this;
+                }
 			}
 			phase = PHASE_WAIT;
 		}
@@ -141,7 +148,7 @@ void ofxClickDownMenu::mousePressed(ofMouseEventArgs &mouse){
             }
         }
 	}else if (phase == PHASE_CLICK){
-		if (menu_focused != -1){
+        if (menu_focused != -1){
 			doFunction();
 		}else{
 			menu_focused = menus.size()-1;
@@ -184,12 +191,54 @@ void ofxClickDownMenu::keyReleased(ofKeyEventArgs &key){
 	
 }
 
+////// JOSH
+void ofxClickDownMenu::RegisterMenuBranch(ofxClickDownMenu * menu){
+    if ((menus.size() > 0)&&(menus[menus.size()-1].message == " X Cancel")){
+        menus.pop_back();
+    }
+    menu->isBranchMenu = true;
+    ofxCDMButton bt;
+    bt.message = menu->menu_name;
+    bt.isButton = false;
+    bt.isMenu = true;
+    bt.isBranch = false;
+    bt.isFader  = false;
+    
+    bt.menuPointer = menu;
+    
+    menus.push_back(bt);
+    
+    window_size.y = menus.size()*20;
+    window_size.x = MAX((bt.message + " >").length()*9,window_size.x);
+}
+
+void ofxClickDownMenu::RegisterButton(string Button){
+    if ((menus.size() > 0)&&(menus[menus.size()-1].message == " X Cancel")){
+        menus.pop_back();
+    }
+    ofxCDMButton bt;
+    bt.message = Button;
+    bt.isButton = true;
+    bt.isMenu = false;
+    bt.isBranch = false;
+    bt.isFader  = false;
+    
+    menus.push_back(bt);
+    
+    if (menus[menus.size()-1].message != " X Cancel") RegisterMenu(" X Cancel");
+    
+    window_size.y = menus.size()*20;
+    window_size.x = MAX(bt.message.length()*9,window_size.x);
+}
+
 void ofxClickDownMenu::RegisterMenu(string Menu){
 	if ((menus.size() > 0)&&(menus[menus.size()-1].message == " X Cancel")){
 		menus.pop_back();
 	}
 	ofxCDMButton bt;
 	bt.message = Menu;
+    bt.isButton = false;
+    bt.isMenu = false;
 	bt.isBranch = false;
 	bt.isFader  = false;
 	
@@ -201,18 +250,14 @@ void ofxClickDownMenu::RegisterMenu(string Menu){
 	window_size.x = MAX(bt.message.length()*9,window_size.x);
 }
 
-////// JOSH
-void ofxClickDownMenu::RegisterBranch(string Menu, ofxClickDownMenu *clickDownMenu){
-    
-    clickDownMenu->openMenu(ofGetWidth()/2, ofGetHeight()/2);
-}
-
 void ofxClickDownMenu::RegisterBranch(string Menu, vector<string> *Menus){
 	if ((menus.size() > 0)&&(menus[menus.size()-1].message == " X Cancel")){
 		menus.pop_back();
 	}
 	ofxCDMButton bt;
 	bt.message = Menu;
+    bt.isButton = false;
+    bt.isMenu = false;
 	bt.isBranch = true;
 	bt.isFader  = false;
 
@@ -234,6 +279,8 @@ void ofxClickDownMenu::RegisterFader(string Menu, float *valueP){
 	}
 	ofxCDMButton bt;
 	bt.message = Menu;
+    bt.isButton = false;
+    bt.isMenu = false;
 	bt.isBranch = false;
 	bt.isFader  = true;
 	bt.fader_Pointer = valueP;
@@ -263,7 +310,7 @@ void ofxClickDownMenu::UnRegisterMenu(string Menu){
 }
 
 void ofxClickDownMenu::doFunction(){
-	if (menus[menu_focused].isBranch){
+    if (menus[menu_focused].isBranch){
 		// Gen Branch menu
 		if (!haveChild){
 			child = new ofxClickDownMenu();
@@ -278,7 +325,6 @@ void ofxClickDownMenu::doFunction(){
 		}else{
 			frame = 0;
 			phase = PHASE_SELECT;
-            bIsMenuOpen = false;
 		}
 	}else if(menus[menu_focused].isFader){
 		//Gen Fader
@@ -294,13 +340,25 @@ void ofxClickDownMenu::doFunction(){
 			frame = 0;
 			phase = PHASE_SELECT;
 		}
-	}else {
+    } else if(menus[menu_focused].isMenu){
+        cout << "ASDFASDF" << endl;
+        child = menus[menu_focused].menuPointer;
+        child->isChild = true;
+        child->parent = this;
+        haveChild = true;
+        child->openMenu(window_pos.x+window_size.x, window_pos.y);
+    } else if(menus[menu_focused].isButton){
+        cout << "BUTTON!!!!!!!!!" << endl;
+        ofxCDMEvent ev;
+        ev.message = menu_name + "::" + menus[menu_focused].message;
+        ofNotifyEvent(ofxCDMEvent::MenuPressed,ev);
+        phase = PHASE_SELECT;
+        frame = 0;
+    }else {
 		//Gen normal event handler
 		frame = 0;
 		phase = PHASE_SELECT;
-		if (haveChild){
-			
-		}else{
+		if (!haveChild){
 			if (isChild){
 				if (menus[menu_focused].message == "<< Back"){
 					
@@ -327,12 +385,11 @@ void ofxClickDownMenu::openMenu(int x,int y){
 	frame = 0;
 	menu_focused = -1;
 	phase = PHASE_CLICK;
-    bIsMenuOpen = true;
 	ofxCDMEvent ev;
 	ev.message = menu_name + "::" + "mouseFix";
 	ofNotifyEvent(ofxCDMEvent::MenuPressed,ev);
 }
 
 bool ofxClickDownMenu::getIsActive(){
-    return bIsMenuOpen;
+    return phase == PHASE_CLICK;
 }

@@ -77,25 +77,40 @@ void InteractiveMenu::initModulators(){
     ModulatorMenu.RegisterBranch("LFO", &ModulatorMenu_LFO);
     
     //JENIFER MAX Modulator Buttons Menu
-    ModulatorMenu_JEN.push_back("Kick Vol");
-    ModulatorMenu_JEN.push_back("Snare Vol");
-    ModulatorMenu_JEN.push_back("----PlayHeads----");
-        ModulatorMenu_JEN.push_back("Song");
-        ModulatorMenu_JEN.push_back("Part");
-        ModulatorMenu_JEN.push_back("Segment");
-        ModulatorMenu_JEN.push_back("Bar");
-        ModulatorMenu_JEN.push_back("Minim");
-        ModulatorMenu_JEN.push_back("Beat");
-        ModulatorMenu_JEN.push_back("Quaver");
-        ModulatorMenu_JEN.push_back("SemiQuaver");
 
-    ModulatorMenu_JEN.push_back("----Instruments----");
-        ModulatorMenu_JEN.push_back("Kick Amp");
-        ModulatorMenu_JEN.push_back("Kick Perc");
-        ModulatorMenu_JEN.push_back("Kick Pan");
-
+    instruments.menu_name = "Instruments";
+    instruments_JEN.push_back("Kick Amp");
+    instruments_JEN.push_back("Kick Pan");
+    instruments_JEN.push_back("Snare Amp");
+    instruments_JEN.push_back("Snare Pan");
+    instruments_JEN.push_back("Ride Amp");
+    instruments_JEN.push_back("Ride Pan");
+    instruments_JEN.push_back("Ghost Amp");
+    instruments_JEN.push_back("Ghost Pan");
+    for(int i=0; i < instruments_JEN.size(); i++){
+        instruments.RegisterButton(instruments_JEN[i]);
+    }
     
-    ModulatorMenu.RegisterBranch("JEN", &ModulatorMenu_JEN);
+    playheads.menu_name = "Playheads";
+    playheads_JEN.push_back("Song");
+    playheads_JEN.push_back("Part");
+    playheads_JEN.push_back("Segment");
+    playheads_JEN.push_back("Bar");
+    playheads_JEN.push_back("Minim");
+    playheads_JEN.push_back("Beat");
+    playheads_JEN.push_back("Quaver");
+    playheads_JEN.push_back("SemiQuaver");
+    for(int i=0; i < playheads_JEN.size(); i++){
+        playheads.RegisterButton(playheads_JEN[i]);
+    }
+    
+    jenMenu.menu_name = "JEN";
+    jenMenu.RegisterMenuBranch(&playheads);
+    jenMenu.RegisterMenuBranch(&instruments);
+    
+    ModulatorMenu.RegisterMenuBranch(&jenMenu);
+
+    //playheads.RegisterMenuBranch(&ModulatorMenu);
 }
 
 //--------------------------------------------------------------
@@ -146,7 +161,8 @@ void InteractiveMenu::draw(){
 
     ofSetColor(255,100,10);
     ofDrawBitmapString("Dest", xPos, yPos - 5);
-    
+    ofDrawBitmapString("Mod", xPos+padding, yPos - 5);
+ 
     /*-------------Draw Dest Menu-------------*/
     ofSetColor(255, 0, 25);
     ofNoFill();
@@ -189,8 +205,11 @@ void InteractiveMenu::cmdEvent(ofxCDMEvent &ev){
     for(int i = 0; i < ModulatorMenu_LFO.size(); i++){
         if(ev.message == "modulatorMenu::LFO::" + ModulatorMenu_LFO[i]) modulator = ModulatorMenu_LFO[i];
     }
-    for(int i = 0; i < ModulatorMenu_JEN.size(); i++){
-        if(ev.message == "modulatorMenu::JEN::" + ModulatorMenu_JEN[i]) modulator = ModulatorMenu_JEN[i];
+    for(int i = 0; i < instruments_JEN.size(); i++){
+        if(ev.message == "Instruments::" + instruments_JEN[i]) modulator = instruments_JEN[i];
+    }
+    for(int i = 0; i < playheads_JEN.size(); i++){
+        if(ev.message == "Playheads::" + playheads_JEN[i]) modulator = playheads_JEN[i];
     }
     
     cout << "Clikc message = " << ev.message << endl;
