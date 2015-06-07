@@ -9,7 +9,7 @@
 #pragma once
 #include "ofMain.h"
 #include <GLUT/GLUT.h> 
-#include "ofxCDMEvent.h"
+//#include "ofxCDMEvent.h"
 #include "ofxClickDownFader.h"
 
 #define PHASE_WAIT 0
@@ -87,5 +87,14 @@ public:
     void mouseScrolled(ofMouseEventArgs& mouse);
 	void keyPressed(ofKeyEventArgs  &key);
 	void keyReleased(ofKeyEventArgs &key);
+    
+    //Menu Pressed Event
+//    ofxCDMEvent MenuPressed;
+    
+    void triggerEvent();
+    ofEvent <string> MenuPressed;
+
+    string eventName;
+//    ofEvent<string> menuPressed;
 
 };

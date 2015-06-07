@@ -14,5 +14,7 @@ public:
 	float args;
 	string message;
 	
-	static ofEvent <ofxCDMEvent> MenuPressed;
+    ofEvent <string> MenuPressed;
+//    static ofEvent <ofxCDMEvent> MenuPressed;
+    
 };

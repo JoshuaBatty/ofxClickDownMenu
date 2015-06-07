@@ -8,7 +8,13 @@ void ofApp::setup(){
     ofSetCircleResolution(40);
     ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 
-    menu.setup(300,300);
+    for(int j = 0; j < 3; j++){
+    for(int i=0; i < 3; i++){
+        InteractiveMenu* menu = new InteractiveMenu;
+        menu->setup(50+(i*330),100+(j*300));
+        menus.push_back(menu);
+    }
+                    }
 }
 
 //--------------------------------------------------------------
@@ -23,7 +29,9 @@ void ofApp::draw(){
     ofSetHexColor(0xFFFFFF);
     ofDrawBitmapString("Click & open Menu Dialog.", 30,30);
     
-    menu.draw();
+    for(int i=0; i < menus.size(); i++){
+        menus[i]->draw();
+    }
 }
 
 //--------------------------------------------------------------

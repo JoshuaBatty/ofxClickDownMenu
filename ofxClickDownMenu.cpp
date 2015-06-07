@@ -29,6 +29,8 @@ ofxClickDownMenu::ofxClickDownMenu(){
 	hilight.setHsb(235, 255, 255,180);
 	focus_y = 1;
 	Enable = true;
+    
+    eventName = "NULL";
 }
 
 ofxClickDownMenu::~ofxClickDownMenu(){
@@ -38,18 +40,20 @@ ofxClickDownMenu::~ofxClickDownMenu(){
 
 void ofxClickDownMenu::draw(){
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+    
 	if (phase == PHASE_CLICK){
 		frame += 1 * 90.0f / ofGetFrameRate();
 		window_y += (window_size.y - window_y) / 5.0 * 120.0f / ofGetFrameRate();
 		window_y = MIN(window_size.y,window_y);
-		ofSetColor(255, 255, 255,140);
+
+        ofSetColor(255, 255, 255,140);
 		ofNoFill();
 		ofRect(window_pos,window_size.x,window_y);
 		ofFill();
-		ofSetColor(0, 0, 0,100);
+		ofSetColor(0, 0, 0,255);
 		ofRect(window_pos,window_size.x,window_y);
-		
-		for (int i = 0;i < menus.size();i++){
+
+        for (int i = 0;i < menus.size();i++){
 			if (frame > i*3) {
 				ofSetColor(255,255,255,100);
                 if (i > 0) {
@@ -57,7 +61,6 @@ void ofxClickDownMenu::draw(){
                     // Fill inbetween borders with black to remove transperancy
                     //ofSetColor(0, 0, 0);
                     //ofRect(window_pos.x,window_pos.y+i*20, window_size.x, 20);
-                    
                     // Draw a border
                     ofLine(window_pos.x		, window_pos.y+i*20,
                            window_pos.x+window_size.x*(1-(powf((MIN(1.0,MAX(0.0,frame-i*3)/15.0))-1.0,4.0))),
@@ -82,7 +85,7 @@ void ofxClickDownMenu::draw(){
 			if (menu_focused == i){
 				ofEnableBlendMode(OF_BLENDMODE_ADD);
 				ofSetColor(hilight);
-//				ofRect(window_pos.x,window_pos.y+i*20, window_size.x, 20);
+				ofRect(window_pos.x,window_pos.y+i*20, window_size.x, 20);
 				ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 			}
 		}
@@ -112,7 +115,6 @@ void ofxClickDownMenu::draw(){
 		hl.a -= 20;
 		ofSetColor(hl);
 		ofNoFill();
-
 		ofRect(window_pos.x,window_pos.y+menu_focused*20+10, window_size.x, 5.0/(frame));
 		ofRect(window_pos.x, window_pos.y, window_size.x, window_size.y);
 		ofFill();
@@ -134,6 +136,7 @@ void ofxClickDownMenu::draw(){
 	if (haveFChild)fchild->draw();
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	ofSetRectMode(OF_RECTMODE_CORNER);
+    
 }
 
 void ofxClickDownMenu::mousePressed(ofMouseEventArgs &mouse){
@@ -155,8 +158,6 @@ void ofxClickDownMenu::mousePressed(ofMouseEventArgs &mouse){
 			doFunction();
 		}
 	}
-	
-	
 }
 
 void ofxClickDownMenu::mouseDragged(ofMouseEventArgs &mouse){
@@ -177,7 +178,8 @@ void ofxClickDownMenu::mouseMoved(ofMouseEventArgs &mouse){
 }
 
 void ofxClickDownMenu::mouseReleased(ofMouseEventArgs &mouse){
-	
+
+    //triggerEvent();
 }
 
 void ofxClickDownMenu::mouseScrolled(ofMouseEventArgs &mouse){
@@ -314,6 +316,7 @@ void ofxClickDownMenu::doFunction(){
 		// Gen Branch menu
 		if (!haveChild){
 			child = new ofxClickDownMenu();
+            //ofAddListener(this->MenuPressed, this, &ofxClickDownMenu::triggerEvent);
 			child->menu_name = menu_name + "::" + menus[menu_focused].message;
 			for (int i = 0;i < menus[menu_focused].branchmenu.size();i++){
 				child->RegisterMenu(menus[menu_focused].branchmenu[i]);
@@ -321,10 +324,11 @@ void ofxClickDownMenu::doFunction(){
 			child->openMenu(window_pos.x+window_size.x, window_pos.y);
 			child->isChild = true;
 			child->parent = this;
-			haveChild = true;		
+			haveChild = true;
 		}else{
 			frame = 0;
 			phase = PHASE_SELECT;
+            triggerEvent();
 		}
 	}else if(menus[menu_focused].isFader){
 		//Gen Fader
@@ -333,25 +337,30 @@ void ofxClickDownMenu::doFunction(){
 			fchild->parent = this;
 			haveFChild = true;
 		}else{
-			ofxCDMEvent ev;
-			ev.message = menu_name + "::" + menus[menu_focused].message;
-			ofNotifyEvent(ofxCDMEvent::MenuPressed,ev);
-
+            eventName = menu_name + "::" + menus[menu_focused].message;
+            
+            cout << " EV 1 " << endl;
 			frame = 0;
 			phase = PHASE_SELECT;
 		}
     } else if(menus[menu_focused].isMenu){
-        cout << "ASDFASDF" << endl;
         child = menus[menu_focused].menuPointer;
         child->isChild = true;
         child->parent = this;
         haveChild = true;
         child->openMenu(window_pos.x+window_size.x, window_pos.y);
     } else if(menus[menu_focused].isButton){
-        cout << "BUTTON!!!!!!!!!" << endl;
-        ofxCDMEvent ev;
-        ev.message = menu_name + "::" + menus[menu_focused].message;
-        ofNotifyEvent(ofxCDMEvent::MenuPressed,ev);
+        //child = menus[menu_focused].menuPointer;
+        //child->isChild = true;
+
+        eventName = menu_name + "::" + menus[menu_focused].message;
+
+        //child->eventName = eventName;
+        cout << " EV 2 " << endl;
+        
+        
+        triggerEvent();
+        //parent->doFunction();
         phase = PHASE_SELECT;
         frame = 0;
     }else {
@@ -363,20 +372,43 @@ void ofxClickDownMenu::doFunction(){
 				if (menus[menu_focused].message == "<< Back"){
 					
 				}else{
-					ofxCDMEvent ev;
-					ev.message = menu_name + "::" + menus[menu_focused].message;
-					ofNotifyEvent(ofxCDMEvent::MenuPressed,ev);
+                    eventName = menu_name + "::" + menus[menu_focused].message;
+                    
+                    cout << " EV 3 " << endl;
+
 					parent->doFunction();
-				}
+                
+                }
 			}else{
-				ofxCDMEvent ev;
-				ev.message = menu_name + "::" + menus[menu_focused].message;
-				ofNotifyEvent(ofxCDMEvent::MenuPressed,ev);
+                eventName = menu_name + "::" + menus[menu_focused].message;
+                
+                cout << " EV 4 " << endl;
+
 			}
 		}
 	}
 
+
 }
+
+void ofxClickDownMenu::triggerEvent(){
+//    string ev = menu_name + "::" + menus[menu_focused].message;
+   // string ev = "TRIGGER EVENT";
+    
+    //cout << "CHILD EVENT NAME = " << child->eventName << endl;
+       // ofNotifyEvent(MenuPressed,child->eventName,child);
+
+    cout << "CHILD EVENT NAME = " << child->eventName << endl;
+    
+    string name = child->eventName;
+    
+    cout << "NAME = " << name << endl;
+
+    ofNotifyEvent(MenuPressed,name,this);
+
+    
+}
+
 
 void ofxClickDownMenu::openMenu(int x,int y){
 	window_pos = ofPoint(x,y);
@@ -385,9 +417,12 @@ void ofxClickDownMenu::openMenu(int x,int y){
 	frame = 0;
 	menu_focused = -1;
 	phase = PHASE_CLICK;
-	ofxCDMEvent ev;
-	ev.message = menu_name + "::" + "mouseFix";
-	ofNotifyEvent(ofxCDMEvent::MenuPressed,ev);
+	//ofxCDMEvent ev;
+	//ev.message = menu_name + "::" + "mouseFix";
+    string ev = menu_name + "::" + "mouseFix";
+	ofNotifyEvent(MenuPressed,ev,this);
+    
+    //triggerEvent();
 }
 
 bool ofxClickDownMenu::getIsActive(){

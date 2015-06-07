@@ -8,4 +8,6 @@
 
 #include "ofxCDMEvent.h"
 
-ofEvent <ofxCDMEvent> ofxCDMEvent::MenuPressed;
+//ofEvent <ofxCDMEvent> ofxCDMEvent::MenuPressed;
+
+

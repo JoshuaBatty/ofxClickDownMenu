@@ -30,7 +30,10 @@ public:
     void initModulators();
     
     /*-----ofxCDM objects----*/
-    void cmdEvent(ofxCDMEvent &ev);
+//    void cmdEvent(ofxCDMEvent &ev);
+    void cmdEvent(string &ev);
+    //ofxCDMEvent cdmEvent;
+    
     ofxClickDownMenu jenMenu;
     ofxClickDownMenu DestinationMenu;
     ofxClickDownMenu ModulatorMenu;
@@ -61,6 +64,8 @@ public:
     //EVENTS
     void bModMenuPressed(bool & b);
     void bDestMenuPressed(bool & b);
+    
+    void bTest(string & b);
     
 private:
     int xPos;

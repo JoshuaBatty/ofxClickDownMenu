@@ -27,8 +27,12 @@ void InteractiveMenu::setup(int x, int y){
     initDestinations();
     
     //Add Event Listener
-    ofAddListener(ofxCDMEvent::MenuPressed, this, &InteractiveMenu::cmdEvent);
-    
+    //ofAddListener(ofxCDMEvent::MenuPressed, this, &InteractiveMenu::cmdEvent);
+   
+    ofAddListener(DestinationMenu.MenuPressed, this, &InteractiveMenu::cmdEvent);
+    ofAddListener(ModulatorMenu.MenuPressed, this, &InteractiveMenu::cmdEvent);
+
+   
     // UI Menu
     modMenu.init("mod test", menuWidth, 30, 0 , 0, 0);
     destMenu.init("dest test", menuWidth, 30, 0 , 0, 0);
@@ -42,7 +46,14 @@ void InteractiveMenu::setup(int x, int y){
 
     gui->addRangeSlider("Range", 0.0, 1.0, 0.0, 1.0, menuWidth-10, 30-8);
 
+    gui->setAutoDraw(false);
+    gui->setVisible(false);
 
+}
+
+//--------------------------------------------------------------
+void InteractiveMenu::bTest(string & b){
+    cout << "SLUT BAG " << endl;
 }
 
 //--------------------------------------------------------------
@@ -50,6 +61,7 @@ void InteractiveMenu::bModMenuPressed(bool & b){
     if(ModulatorMenu.getIsActive() == false){
         ModulatorMenu.openMenu(modMenu.getBottomLeft().x,modMenu.getBottomLeft().y);
     }
+    cout << "im in mod " << endl;
 }
 
 //--------------------------------------------------------------
@@ -57,6 +69,7 @@ void InteractiveMenu::bDestMenuPressed(bool & b){
     if(DestinationMenu.getIsActive() == false){
         DestinationMenu.openMenu(destMenu.getBottomLeft().x,destMenu.getBottomLeft().y);
     }
+    cout << "im in dest " << endl;
 }
 
 //--------------------------------------------------------------
@@ -159,6 +172,9 @@ void InteractiveMenu::update(){
 //--------------------------------------------------------------
 void InteractiveMenu::draw(){
 
+    // Draw GUI Up here so it can be drawn over!
+    gui->draw();
+    
     ofSetColor(255,100,10);
     ofDrawBitmapString("Dest", xPos, yPos - 5);
     ofDrawBitmapString("Mod", xPos+padding, yPos - 5);
@@ -181,38 +197,42 @@ void InteractiveMenu::draw(){
     ofSetHexColor(0xFFFFFF);
     ofDrawBitmapString(modulator, xPos+padding+8,yPos+20);
     
-    DestinationMenu.draw();
-    ModulatorMenu.draw();
-    
     destMenu.draw(xPos, yPos);
     modMenu.draw(xPos + padding, yPos);
+    
+    DestinationMenu.draw();
+    ModulatorMenu.draw();
+
 }
 
 //--------------------------------------------------------------
-void InteractiveMenu::cmdEvent(ofxCDMEvent &ev){
+//void InteractiveMenu::cmdEvent(ofxCDMEvent &ev){
+    void InteractiveMenu::cmdEvent(string &ev){
+        
+        cout << " --------------------------- " << endl;
     /*-------------Catch Destination Menu Messages-------------*/
     for(int i = 0; i < DestinationMenu_AVGS.size(); i++){
-        if(ev.message == "destinationMenu::AVGS::" + DestinationMenu_AVGS[i]) destination = DestinationMenu_AVGS[i];
+        if(ev == "destinationMenu::AVGS::" + DestinationMenu_AVGS[i]) destination = DestinationMenu_AVGS[i];
     }
     for(int i = 0; i < DestinationMenu_SHADER.size(); i++){
-        if(ev.message == "destinationMenu::SHADER::" + DestinationMenu_SHADER[i]) destination = DestinationMenu_SHADER[i];
+        if(ev == "destinationMenu::SHADER::" + DestinationMenu_SHADER[i]) destination = DestinationMenu_SHADER[i];
     }
     for(int i = 0; i < DestinationMenu_FM.size(); i++){
-        if(ev.message == "destinationMenu::FM::" + DestinationMenu_FM[i]) destination = DestinationMenu_FM[i];
+        if(ev == "destinationMenu::FM::" + DestinationMenu_FM[i]) destination = DestinationMenu_FM[i];
     }
     
     /*-------------Catch Modulator Menu Messages-------------*/
     for(int i = 0; i < ModulatorMenu_LFO.size(); i++){
-        if(ev.message == "modulatorMenu::LFO::" + ModulatorMenu_LFO[i]) modulator = ModulatorMenu_LFO[i];
+        if(ev == "modulatorMenu::LFO::" + ModulatorMenu_LFO[i]) modulator = ModulatorMenu_LFO[i];
     }
     for(int i = 0; i < instruments_JEN.size(); i++){
-        if(ev.message == "Instruments::" + instruments_JEN[i]) modulator = instruments_JEN[i];
+        if(ev == "Instruments::" + instruments_JEN[i]) modulator = instruments_JEN[i];
     }
     for(int i = 0; i < playheads_JEN.size(); i++){
-        if(ev.message == "Playheads::" + playheads_JEN[i]) modulator = playheads_JEN[i];
+        if(ev == "Playheads::" + playheads_JEN[i]) modulator = playheads_JEN[i];
     }
     
-    cout << "Clikc message = " << ev.message << endl;
+    cout << "Click message = " << ev << endl;
 }
 
 //--------------------------------------------------------------

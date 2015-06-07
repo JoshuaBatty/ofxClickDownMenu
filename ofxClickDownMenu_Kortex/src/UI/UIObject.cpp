@@ -30,7 +30,7 @@ void UIObject::update(){
 
 void UIObject::draw(int x, int y) {
     set(x,y, width*scale, height*scale);
-    icon.draw(x,y,width * scale,height * scale);
+  //  icon.draw(x,y,width * scale,height * scale);
 }
 
 void UIObject::onPress(int x, int y, int button)
