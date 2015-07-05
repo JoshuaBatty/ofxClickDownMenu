@@ -46,8 +46,11 @@ void InteractiveMenu::setup(int x, int y){
 
     gui->addRangeSlider("Range", 0.0, 1.0, 0.0, 1.0, menuWidth-10, 30-8);
 
-    gui->setAutoDraw(false);
-    gui->setVisible(false);
+//    gui->setAutoDraw(false);
+    gui->disableAppDrawCallback();
+
+    gui->setVisible(true);
+    
 
 }
 
@@ -203,6 +206,9 @@ void InteractiveMenu::draw(){
     DestinationMenu.draw();
     ModulatorMenu.draw();
 
+//    ofSetColor(0);
+//    ofRect(ofGetMouseX(),ofGetMouseY(),200,200);
+//    ofSetColor(255);
 }
 
 //--------------------------------------------------------------

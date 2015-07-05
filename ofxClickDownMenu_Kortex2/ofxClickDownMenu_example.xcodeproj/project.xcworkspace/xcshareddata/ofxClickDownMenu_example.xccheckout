@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>CB0CC93D-A98D-40F3-879F-C4813C59A47A</string>
+	<key>IDESourceControlProjectName</key>
+	<string>ofxClickDownMenu_example</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>6C10E9CB62EEF6C0C2AD759B4DA022783425AA2C</key>
+		<string>https://github.com/JoshuaBatty/ofxClickDownMenu</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>ofxClickDownMenu_Kortex2/ofxClickDownMenu_example.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>6C10E9CB62EEF6C0C2AD759B4DA022783425AA2C</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/JoshuaBatty/ofxClickDownMenu</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>6C10E9CB62EEF6C0C2AD759B4DA022783425AA2C</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>6C10E9CB62EEF6C0C2AD759B4DA022783425AA2C</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ofxClickDownMenu</string>
+		</dict>
+	</array>
+</dict>
+</plist>

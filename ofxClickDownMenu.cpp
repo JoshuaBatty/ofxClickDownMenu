@@ -14,7 +14,7 @@ ofxClickDownMenu::ofxClickDownMenu(){
 	useFont = false;
     isBranchMenu = false;
 	
-	font.loadFont("BEBAS___.TTF", 10);
+	font.loadFont("BebasNeue.TTF", 10);
 	phase = PHASE_WAIT;
 	frame = 0;
 	window_size = ofPoint(0,100);
@@ -39,8 +39,10 @@ ofxClickDownMenu::~ofxClickDownMenu(){
 }
 
 void ofxClickDownMenu::draw(){
-	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
     
+//	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+    ofEnableBlendMode(OF_BLENDMODE_DISABLED);
+
 	if (phase == PHASE_CLICK){
 		frame += 1 * 90.0f / ofGetFrameRate();
 		window_y += (window_size.y - window_y) / 5.0 * 120.0f / ofGetFrameRate();
@@ -83,18 +85,18 @@ void ofxClickDownMenu::draw(){
 				}
 			}
 			if (menu_focused == i){
-				ofEnableBlendMode(OF_BLENDMODE_ADD);
+			//	ofEnableBlendMode(OF_BLENDMODE_ADD);
 				ofSetColor(hilight);
 				ofRect(window_pos.x,window_pos.y+i*20, window_size.x, 20);
-				ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+			//	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 			}
 		}
 		ofSetColor(hilight);
 		focus_y += (menu_focused*20 - focus_y) / 2.0;
 		focus_y = MAX(0,focus_y);
-		ofEnableBlendMode(OF_BLENDMODE_ADD);
+		//ofEnableBlendMode(OF_BLENDMODE_ADD);
 		ofRect(window_pos.x, window_pos.y+focus_y, window_size.x, 20);
-		ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+		//ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	}
 	if (phase == PHASE_SELECT){
 		frame += 1 * 90.0f / ofGetFrameRate();;
@@ -108,7 +110,7 @@ void ofxClickDownMenu::draw(){
             }
 		}
 		
-		ofEnableBlendMode(OF_BLENDMODE_ADD);
+		//ofEnableBlendMode(OF_BLENDMODE_ADD);
 		if (frame > 7) ofSetColor(hilight.r,hilight.g,hilight.b,255*ofGetFrameNum()%2);
 		else		   ofSetColor(hilight);
 
@@ -134,10 +136,113 @@ void ofxClickDownMenu::draw(){
 	
 	if (haveChild) child->draw();
 	if (haveFChild)fchild->draw();
-	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+	//ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	ofSetRectMode(OF_RECTMODE_CORNER);
-    
 }
+
+//void ofxClickDownMenu::draw(){
+//    
+//    ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+//    
+//    if (phase == PHASE_CLICK){
+//        frame += 1 * 90.0f / ofGetFrameRate();
+//        window_y += (window_size.y - window_y) / 5.0 * 120.0f / ofGetFrameRate();
+//        window_y = MIN(window_size.y,window_y);
+//        
+//        ofSetColor(255, 255, 255,140);
+//        ofNoFill();
+//        ofRect(window_pos,window_size.x,window_y);
+//        ofFill();
+//        ofSetColor(0, 0, 0,255);
+//        ofRect(window_pos,window_size.x,window_y);
+//        
+//        for (int i = 0;i < menus.size();i++){
+//            if (frame > i*3) {
+//                ofSetColor(255,255,255,100);
+//                if (i > 0) {
+//                    
+//                    // Fill inbetween borders with black to remove transperancy
+//                    //ofSetColor(0, 0, 0);
+//                    //ofRect(window_pos.x,window_pos.y+i*20, window_size.x, 20);
+//                    // Draw a border
+//                    ofLine(window_pos.x		, window_pos.y+i*20,
+//                           window_pos.x+window_size.x*(1-(powf((MIN(1.0,MAX(0.0,frame-i*3)/15.0))-1.0,4.0))),
+//                           window_pos.y+i*20);
+//                }
+//                
+//                ofSetColor(255,255,255);
+//                string mes = "";
+//                
+//                mes += menus[i].message.substr(0,MIN(menus[i].message.length(),(frame-i*3)/2));
+//                
+//                for (int j = 0;j < MAX(0,(float)menus[i].message.length()-MAX(0,(frame-i*3)/2));j++){
+//                    mes += ofToString((char)ofRandom(33,120));
+//                }
+//                if (menus[i].isBranch || menus[i].isMenu) mes += " >";
+//                if (useFont){
+//                    font.drawString(mes, window_pos.x+4,window_pos.y+i*20+15);
+//                }else{
+//                    ofDrawBitmapString(mes, window_pos.x+4,window_pos.y+i*20+13);
+//                }
+//            }
+//            if (menu_focused == i){
+//                ofEnableBlendMode(OF_BLENDMODE_ADD);
+//                ofSetColor(hilight);
+//                ofRect(window_pos.x,window_pos.y+i*20, window_size.x, 20);
+//                ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+//            }
+//        }
+//        ofSetColor(hilight);
+//        focus_y += (menu_focused*20 - focus_y) / 2.0;
+//        focus_y = MAX(0,focus_y);
+//        ofEnableBlendMode(OF_BLENDMODE_ADD);
+//        ofRect(window_pos.x, window_pos.y+focus_y, window_size.x, 20);
+//        ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+//    }
+//    if (phase == PHASE_SELECT){
+//        frame += 1 * 90.0f / ofGetFrameRate();;
+//        ofSetHexColor(0xFFFFFF);
+//        if (frame > 7) ofSetColor(255*(ofGetFrameNum()%2));
+//        if (useFont){
+//            font.drawString(menus[menu_focused].message, window_pos.x+4,window_pos.y+menu_focused*20+15);
+//        }else{
+//            if(menus.size() > menu_focused) {
+//                ofDrawBitmapString(menus[menu_focused].message, window_pos.x+4,window_pos.y+menu_focused*20+13);
+//            }
+//        }
+//        
+//        ofEnableBlendMode(OF_BLENDMODE_ADD);
+//        if (frame > 7) ofSetColor(hilight.r,hilight.g,hilight.b,255*ofGetFrameNum()%2);
+//        else		   ofSetColor(hilight);
+//        
+//        hl.a -= 20;
+//        ofSetColor(hl);
+//        ofNoFill();
+//        ofRect(window_pos.x,window_pos.y+menu_focused*20+10, window_size.x, 5.0/(frame));
+//        ofRect(window_pos.x, window_pos.y, window_size.x, window_size.y);
+//        ofFill();
+//        if (frame > 15){
+//            if (isChild){
+//                parent->haveChild = false;
+//                if (isBranchMenu) {
+//                    parent->frame = 0;
+//                    parent->phase = PHASE_SELECT;
+//                } else {
+//                    delete this;
+//                }
+//            }
+//            phase = PHASE_WAIT;
+//        }
+//    }				
+//    
+//    if (haveChild) child->draw();
+//    if (haveFChild)fchild->draw();
+//    ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+//    ofSetRectMode(OF_RECTMODE_CORNER);
+//    
+//    
+//}
+
 
 void ofxClickDownMenu::mousePressed(ofMouseEventArgs &mouse){
 	hl = hilight;
@@ -358,11 +463,11 @@ void ofxClickDownMenu::doFunction(){
         //child->eventName = eventName;
         cout << " EV 2 " << endl;
         
-        
-        triggerEvent();
-        //parent->doFunction();
         phase = PHASE_SELECT;
         frame = 0;
+        triggerEvent();
+        //parent->doFunction();
+
     }else {
 		//Gen normal event handler
 		frame = 0;

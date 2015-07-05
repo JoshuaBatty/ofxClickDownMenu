@@ -8,13 +8,56 @@ void ofApp::setup(){
     ofSetCircleResolution(40);
     ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 
-    for(int j = 0; j < 3; j++){
-        for(int i=0; i < 3; i++){
-            InteractiveMenu* menu = new InteractiveMenu;
-            menu->setup(50+(i*330),100+(j*100));
-            menus.push_back(menu);
-        }
-    }
+//    for(int j = 0; j < 3; j++){
+//        for(int i=0; i < 3; i++){
+//            InteractiveMenu* menu = new InteractiveMenu;
+//            menu->setup(50+(i*330),100+(j*100));
+//            menus.push_back(menu);
+//        }
+//    }
+    
+    
+    // LFOS
+    ofxMenu lfos("LFOS");
+    lfos.addButton("LFO1");
+    lfos.addButton("LFO2");
+    lfos.addButton("LFO3");
+    lfos.addButton("LFO4");
+    lfos.addButton("LFO5");
+    lfos.addButton("REORDER1");
+    lfos.addButton("REORDER2");
+    lfos.addButton("REORDER3");
+    
+    // Jen Instruments
+    ofxMenu instruments("Instruments");
+    instruments.addButton("Kick Amp");
+    instruments.addButton("Kick Pan");
+    instruments.addButton("Snare Amp");
+    instruments.addButton("Snare Pan");
+    instruments.addButton("Ride Amp");
+    instruments.addButton("Ride Pan");
+    instruments.addButton("Ghost Amp");
+    instruments.addButton("Ghost Pan");
+    
+    // Jen Playheads
+    ofxMenu playheads("Playheads");
+    playheads.addButton("Song");
+    playheads.addButton("Part");
+    playheads.addButton("Segment");
+    playheads.addButton("Bar");
+    playheads.addButton("Minim");
+    playheads.addButton("Beat");
+    playheads.addButton("Quaver");
+    playheads.addButton("SemiQuaver");
+    
+    // Jen Type
+    ofxMenu jen("JEN");
+    jen.addMenu(instruments);
+    jen.addMenu(playheads);
+    
+    modulatorMenu.addMenu(jen);
+    modulatorMenu.addMenu(lfos);
+
 }
 
 //--------------------------------------------------------------
@@ -29,9 +72,11 @@ void ofApp::draw(){
     ofSetHexColor(0xFFFFFF);
     ofDrawBitmapString("Click & open Menu Dialog.", 30,30);
     
-    for(int i=0; i < menus.size(); i++){
-        menus[i]->draw();
-    }
+//    for(int i=0; i < menus.size(); i++){
+//        menus[i]->draw();
+//    }
+    
+    modulatorMenu.draw();
 }
 
 //--------------------------------------------------------------
@@ -61,7 +106,8 @@ void ofApp::mousePressed(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
-    
+    modulatorMenu.openByClick(x, y);
+
 }
 
 //--------------------------------------------------------------
